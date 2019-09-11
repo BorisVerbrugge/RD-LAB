@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=api_user
+      - POSTGRES_PASSWORD=jaman
+      - POSTGRES_DB=flaskapp
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5500:5432"
+  vueapp:
+    build:
+      context: .
+      dockerfile: Dockerfile_vue
+    image: vueapp:vue
+    volumes:
+      - ./client:/client
+    ports:
+      - "8081:8080"
+    depends_on:
+      - serverapi
+  serverapi:
+    build:
+      context: .
+      dockerfile: Dockerfile_api
+    image: server:api
+    volumes: 
+      - ./server:/server
+    ports:
+      - "5000:5000"
+    depends_on: 
+      - db

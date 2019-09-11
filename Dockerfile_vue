@@ -1,0 +1,13 @@
+FROM node:10.16
+
+RUN npm i axios@0.18.0 -S
+RUN npm i bootstrap@4.3.1 -S
+RUN npm i bootstrap-vue@2.0.0-rc.19 -S
+
+WORKDIR /client
+
+COPY ./client /client
+
+ENTRYPOINT ["npm"]
+
+CMD ["run", "serve"]
